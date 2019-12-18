@@ -11,12 +11,11 @@ import kotlin.math.abs
 
 
 class MainActivity : AppCompatActivity() {
-    private val pref = this.getPreferences(Context.MODE_PRIVATE)
-    private var timeStart = pref.getLong("com.undrown.nosmoking.timestart", Date().time)
-    private var time = Date().time
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val pref = this.getPreferences(Context.MODE_PRIVATE)
+        var timeStart = pref.getLong("com.undrown.nosmoking.timestart", Date().time)
         fixedRateTimer("timer", false, 0L, 1000L){
             this@MainActivity.runOnUiThread {
                 timePassed.text = getTimeStamp(timeStart)
@@ -24,11 +23,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         resetButton.setOnClickListener {
-            with(this.getPreferences(Context.MODE_PRIVATE).edit()){
+            with(pref.edit()){
                 putLong("com.undrown.nosmoking.timestart", Date().time)
                 apply()
             }
-            timeStart = time
+            timeStart = pref.getLong("com.undrown.nosmoking.timestart", Date().time)
         }
     }
 

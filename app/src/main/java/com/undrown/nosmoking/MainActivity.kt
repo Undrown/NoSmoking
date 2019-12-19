@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         fixedRateTimer("timer", false, 0L, 1000L){
             this@MainActivity.runOnUiThread {
                 timePassed.text = getTimeStamp(timeStart)
-                //textMoneySaved.text = ((timeStart - time)*(20/(3600*24))).toString()
+                textMoneySaved.text = ((Date().time - timeStart)*(20/(3600*24))).toString()
             }
         }
         resetButton.setOnClickListener {
@@ -38,10 +38,48 @@ class MainActivity : AppCompatActivity() {
         var diff = TimeUnit.DAYS.convert(timeDeltaInMillisRest, TimeUnit.MILLISECONDS)
         var diffUsed = TimeUnit.DAYS.toMillis(diff)
         timeDeltaInMillisRest -= diffUsed
-        val daysVerbose = when(abs(diff/10) % 10){
+        //test
+        val years = diff/365
+        var daysRest = diff%365
+        val months = daysRest/30
+        daysRest %= 30
+        val yearsVerbose = when(abs(years/10) % 10){
+            1L -> "Лет"
+            else -> {
+                when(abs(years) % 10){
+                    1L -> "Год"
+                    2L, 3L, 4L -> "Года"
+                    else -> {
+                        "Лет"
+                    }
+                }
+            }
+        }
+        val monthsVerbose = when(abs(months/10) % 10){
+            1L -> "Месяцев"
+            else -> {
+                when(abs(months) % 10){
+                    1L -> "Месяц"
+                    2L, 3L, 4L -> "Месяца"
+                    else -> {
+                        "Месяцев"
+                    }
+                }
+            }
+        }
+        var ymd = ""
+        if(years != 0L){
+            ymd += "$years $yearsVerbose, "
+        }
+        if(months != 0L){
+            ymd += "$months $monthsVerbose, "
+        }
+        //ymd = "$years $yearsVerbose, $months $monthsVerbose, "
+        ////////////////////////////test
+        val daysVerbose = when(abs(daysRest/10) % 10){
             1L -> "Дней"
             else -> {
-                when(abs(diff) % 10){
+                when(abs(daysRest) % 10){
                     1L -> "День"
                     2L, 3L, 4L -> "Дня"
                     else -> {
@@ -50,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val days = "$diff $daysVerbose, "
+        val days = if(daysRest != 0L)"$daysRest $daysVerbose, " else ""
         //hours
         diff = TimeUnit.HOURS.convert(timeDeltaInMillisRest, TimeUnit.MILLISECONDS)
         diffUsed = TimeUnit.HOURS.toMillis(diff)
@@ -67,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val hours = "$diff $hoursVerbose, "
+        val hours = if(diff != 0L)"$diff $hoursVerbose, " else ""
         //minutes
         diff = TimeUnit.MINUTES.convert(timeDeltaInMillisRest, TimeUnit.MILLISECONDS)
         diffUsed = TimeUnit.MINUTES.toMillis(diff)
@@ -84,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val minutes ="$diff $minutesVerbose, "
+        val minutes = if (diff!=0L) "$diff $minutesVerbose, " else ""
         //seconds
         diff = TimeUnit.SECONDS.convert(timeDeltaInMillisRest, TimeUnit.MILLISECONDS)
         diffUsed = TimeUnit.SECONDS.toMillis(diff)
@@ -102,6 +140,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val seconds = "$diff $secondsVerbose"
-        return "$days $hours $minutes $seconds"
+        return "$ymd $days $hours $minutes $seconds"
     }
 }

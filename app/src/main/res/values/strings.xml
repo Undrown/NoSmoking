@@ -3,4 +3,5 @@
     <string name="t_textTimePassed">НЕ КУРЮ УЖЕ</string>
     <string name="t_textMoneySaved">СЭКОНОМИЛ УЖЕ</string>
     <string name="reset">Reset</string>
+    <string name="AS_DOLLARS">$$$</string>
 </resources>

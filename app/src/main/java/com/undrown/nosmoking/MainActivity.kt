@@ -28,12 +28,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         resetButton.setOnClickListener {
+            //TODO promt YES/NO
             with(this.getPreferences(Context.MODE_PRIVATE).edit()){
                 putLong("com.undrown.nosmoking.timestart", Date().time)
                 apply()
             }
             timeStart = this.getPreferences(Context.MODE_PRIVATE).getLong("com.undrown.nosmoking.timestart", Date().time)
         }
-        resetButton.isVisible = false
+        //resetButton.isVisible = false
     }
 }

@@ -1,6 +1,8 @@
 package com.undrown.nosmoking
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -28,12 +30,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
         resetButton.setOnClickListener {
-            //TODO promt YES/NO
-            with(this.getPreferences(Context.MODE_PRIVATE).edit()){
-                putLong("com.undrown.nosmoking.timestart", Date().time)
-                apply()
+            val builder = AlertDialog.Builder(this@MainActivity)
+            with(builder){
+                setMessage("Желаете сбросить?")
+                setNegativeButton("Отмена"){_, _ ->
+                    return@setNegativeButton
+                }
+                setPositiveButton("Ок"){_, _ ->
+                    with(this@MainActivity.getPreferences(Context.MODE_PRIVATE).edit()){
+                        putLong("com.undrown.nosmoking.timestart", Date().time)
+                        apply()
+                    }
+                    timeStart = this@MainActivity
+                        .getPreferences(Context.MODE_PRIVATE)
+                        .getLong("com.undrown.nosmoking.timestart", Date().time)
+                }
+                create()
             }
-            timeStart = this.getPreferences(Context.MODE_PRIVATE).getLong("com.undrown.nosmoking.timestart", Date().time)
         }
         //resetButton.isVisible = false
     }

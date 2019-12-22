@@ -10,9 +10,9 @@ class MoneySavedFormat(timeStart:Long, timeCur:Long) {
     private val rubSaved = rubSavedPerSec * secDelta
     private val usdSaved = (rubSaved/16.5f)
     private val rub = if(rubSaved - rubSaved.roundToInt() > 0)rubSaved.roundToInt() else rubSaved.roundToInt() - 1
-    private val kop = ((rubSaved - rub)*100 - 1).roundToInt()
+    private val kop = ((rubSaved - rub)*100 - 0.5).roundToInt()
     private val usd = if(usdSaved - usdSaved.roundToInt() > 0)usdSaved.roundToInt() else usdSaved.roundToInt() - 1
-    private val cent = ((usdSaved - usd)*100 - 1).roundToInt()
+    private val cent = ((usdSaved - usd)*100 - 0.5).roundToInt()
     val vRub = "$rub руб, $kop к."
     val vUSD = "$usd $, $cent c."
 }

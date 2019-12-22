@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 create().show()
             }
         }
-        //resetButton.isVisible = false
+        //TODO: show how to use saved money
+        //TODO: show variants
     }
 }

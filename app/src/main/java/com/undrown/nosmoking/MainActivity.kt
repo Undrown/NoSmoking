@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                         .getPreferences(Context.MODE_PRIVATE)
                         .getLong("com.undrown.nosmoking.timestart", Date().time)
                 }
-                create()
+                create().show()
             }
         }
         //resetButton.isVisible = false

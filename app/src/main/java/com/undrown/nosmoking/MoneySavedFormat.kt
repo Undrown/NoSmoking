@@ -21,6 +21,6 @@ class MoneySavedFormat(timeStart:Long, timeCur:Long) {
     //private val usd = if(usdSaved - usdSaved.roundToInt() > 0)usdSaved.roundToInt() else usdSaved.roundToInt() - 1
     //private val cent = ((usdSaved - usd)*100).roundToInt()
 
-    val vRub = "$rub руб, $kop к."
-    val vUSD = "$usd $, $cent c."
+    val vRub = "$rub руб., $kop к."
+    val vUSD = "$usd \$, $cent ¢"
 }

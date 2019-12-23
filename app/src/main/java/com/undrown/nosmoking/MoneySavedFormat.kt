@@ -11,9 +11,9 @@ class MoneySavedFormat(timeStart:Long, timeCur:Long) {
     private val rubSaved = rubSavedPerSec * secDelta
     private val usdSaved = (rubSaved/16.5f)
     //right way:
-    private val rub = floor(rubSaved)
-    private val kop = ((rubSaved - rub)*100).toInt()
-    private val usd = floor(usdSaved)
+    private val rub = floor(rubSaved).toInt()
+    private val kop = floor((rubSaved - rub)*100).toInt()
+    private val usd = floor(usdSaved).toInt()
     private val cent = ((usdSaved - usd)*100).toInt()
     //wrong way:
     //private val rub = if(rubSaved - rubSaved.roundToInt() > 0)rubSaved.roundToInt() else rubSaved.roundToInt() - 1

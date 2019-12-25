@@ -1,6 +1,9 @@
 package com.undrown.nosmoking
 
-class MoneyVisualizer(val amount:Float) {
+import kotlin.math.floor
+
+class MoneyVisualizer(value:Double) {
+    private val amount = floor(value*100)/100
     val nominalsRub = mapOf(
         "50ka" to 50.0,
         "25ka" to 25.0,
@@ -13,9 +16,14 @@ class MoneyVisualizer(val amount:Float) {
         "5коп" to 0.05,
         "1коп" to 0.01
         )
-    val result = mutableMapOf<String, Double>()
+    private val result = mutableMapOf<String, Int>()
 
-    fun getSplit(){
-        var amountUnused = amount
+    fun getSplit(amountUnused:Double){
+        val actualNominals = nominalsRub.filter { entry -> entry.value >= amountUnused }
+        val scale = actualNominals.entries.first()
+        result[scale.key] = floor(amountUnused/scale.value).toInt()
+        if(scale.value == 0.01)
+            return
+        getSplit(amountUnused - floor(amountUnused/scale.value))
     }
 }

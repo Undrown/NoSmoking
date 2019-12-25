@@ -56,5 +56,9 @@ class MainActivity : AppCompatActivity() {
         }
         //TODO: show how to use saved money
         //TODO: show variants
+        //TODO: make money visualizer
+        rubSaved.setOnClickListener {
+
+        }
     }
 }

@@ -2,15 +2,12 @@ package com.undrown.nosmoking
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.concurrent.fixedRateTimer
-import kotlin.math.abs
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +44,15 @@ class MainActivity : AppCompatActivity() {
                 }
                 create().show()
             }
+        }
+        timePassed.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Я не курю уже ${TimestampFormat(timeStart, Date().time).toVerbose()}")
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, "Share via...")
+            startActivity(shareIntent)
         }
         //TODO: show how to use saved money
         //TODO: show variants

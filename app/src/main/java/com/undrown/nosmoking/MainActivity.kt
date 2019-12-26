@@ -3,8 +3,6 @@ package com.undrown.nosmoking
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -59,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         }
         //TODO: show how to use saved money
         //TODO: show variants
-        //TODO: make money visualizer
         rubSaved.setOnClickListener {
             val visualizer = MoneyVisualizer(MoneySavedFormat(timeStart, Date().time).rubSaved)
             visualizer.getRandomSplit()

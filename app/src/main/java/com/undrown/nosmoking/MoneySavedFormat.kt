@@ -8,7 +8,7 @@ class MoneySavedFormat(timeStart:Long, timeCur:Long) {
     private val rubSavedPerDay:Double = 20.0                                //рублей в сутки
     private val secInDay = 3600*24                                 //секунд в сутках
     private val rubSavedPerSec = rubSavedPerDay/secInDay            //экономия в секунду
-    private val rubSaved = rubSavedPerSec * secDelta
+    val rubSaved = rubSavedPerSec * secDelta
     private val usdSaved = (rubSaved/16.5f)
     private val rub = floor(rubSaved).toInt()
     private val kop = floor((rubSaved - rub)*100).toInt()

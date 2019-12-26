@@ -1,10 +1,7 @@
 package com.undrown.nosmoking
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.media.Image
-import android.media.ImageReader
+import android.graphics.*
+import org.jetbrains.annotations.TestOnly
 import kotlin.math.floor
 import kotlin.random.Random
 /*
@@ -42,8 +39,9 @@ class MoneyVisualizer(value:Double) {
         "5коп" to BitmapFactory.decodeFile("/drawable/img_005.png"),
         "1коп" to BitmapFactory.decodeFile("/drawable/img_001.png")
     )
+    val paint = Paint()
     val result = mutableMapOf<String, Int>()
-    val resultRandom = mutableMapOf<String, Int>(
+    val resultRandom = mutableMapOf(
         "500ka" to 0,
         "200ka" to 0,
         "100ka" to 0,
@@ -98,6 +96,7 @@ class MoneyVisualizer(value:Double) {
         return resultRandom.toString()
     }
 
+    @TestOnly
     fun getResultSum(): Double {
         var result = 0.0
         for (item in resultRandom){
@@ -106,5 +105,48 @@ class MoneyVisualizer(value:Double) {
             result += scale * times
         }
         return result
+    }
+
+    fun drawMoney():Bitmap{
+        val width = 400
+        val height = 400
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val canvas = Canvas(bitmap)
+        while(resultRandom.filter { item -> item.value > 0 }.isNotEmpty()){
+            for (item in resultRandom.filter { item -> item.value > 0 }){
+                if (item.value > 0){
+                    resultRandom[item.key] = item.value - 1
+                    //println(item.key + " - " + item.value)
+                    drawBitmap(canvas, images.getOrElse(item.key) { println("Error"); BitmapFactory.decodeFile("/drawable/img_500.png") })
+                }
+            }
+        }
+        return bitmap
+    }
+
+    fun getCanvas():Canvas{
+        val width = 400
+        val height = 400
+        val canvas = Canvas()
+        while(resultRandom.filter { item -> item.value > 0 }.isNotEmpty()){
+            for (item in resultRandom.filter { item -> item.value > 0 }){
+                if (item.value > 0){
+                    resultRandom[item.key] = item.value - 1
+                    //println(item.key + " - " + item.value)
+                    drawBitmap(canvas, images.getOrElse(item.key) { println("Error"); BitmapFactory.decodeFile("/drawable/img_500.png") })
+                }
+            }
+        }
+        return canvas
+    }
+
+    private fun drawBitmap(canvas:Canvas, bitmap: Bitmap){
+        val matrix = Matrix()
+        matrix.reset()
+        matrix.setRotate(Random.nextFloat()*360)
+        val x = Random.nextFloat()*(canvas.width - 100)
+        val y = Random.nextFloat()*(canvas.height - 50)
+        matrix.setTranslate(x, y)
+        canvas.drawBitmap(bitmap, matrix, paint)
     }
 }

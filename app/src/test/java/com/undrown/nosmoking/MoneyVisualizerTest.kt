@@ -17,4 +17,12 @@ class MoneyVisualizerTest {
         println("Accuracy: " + abs(value - c.getResultSum()))
         assert(abs(value - c.getResultSum()) < 0.01)
     }
+
+    @Test
+    fun drawMoneyTest(){
+        val value = 12227.2344564
+        val c = MoneyVisualizer(value)
+        c.getRandomSplit()
+        //c.drawMoney()
+    }
 }

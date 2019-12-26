@@ -3,7 +3,10 @@ package com.undrown.nosmoking
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -58,7 +61,12 @@ class MainActivity : AppCompatActivity() {
         //TODO: show variants
         //TODO: make money visualizer
         rubSaved.setOnClickListener {
-
+            val visualizer = MoneyVisualizer(MoneySavedFormat(timeStart, Date().time).rubSaved)
+            visualizer.getRandomSplit()
+            Toast.makeText(this@MainActivity, visualizer.toString(), Toast.LENGTH_SHORT).show()
+            //moneyCanvas.setImageBitmap(visualizer.drawMoney())
+            //moneyCanvas.setImageBitmap(BitmapFactory.decodeFile("drawable/img_500.png"))
+            moneyCanvas.draw(visualizer.getCanvas())
         }
     }
 }

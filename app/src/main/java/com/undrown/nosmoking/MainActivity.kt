@@ -3,8 +3,11 @@ package com.undrown.nosmoking
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -12,6 +15,7 @@ import kotlin.concurrent.fixedRateTimer
 
 
 class MainActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,9 +65,7 @@ class MainActivity : AppCompatActivity() {
             val visualizer = MoneyVisualizer(MoneySavedFormat(timeStart, Date().time).rubSaved)
             visualizer.getRandomSplit()
             Toast.makeText(this@MainActivity, visualizer.toString(), Toast.LENGTH_SHORT).show()
-            //moneyCanvas.setImageBitmap(visualizer.drawMoney())
-            //moneyCanvas.setImageBitmap(BitmapFactory.decodeFile("drawable/img_500.png"))
-            moneyCanvas.draw(visualizer.getCanvas())
+            moneyCanvas.setImageBitmap(visualizer.drawMoney(this))
         }
     }
 }

@@ -1,6 +1,11 @@
 package com.undrown.nosmoking
 
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
+import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.annotation.RequiresApi
 import org.jetbrains.annotations.TestOnly
 import kotlin.math.floor
 import kotlin.random.Random
@@ -24,20 +29,35 @@ class MoneyVisualizer(value:Double) {
         "5коп" to 0.05,
         "1коп" to 0.01
         )
+    //val images = mapOf(
+    //    "500ka" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_500),
+    //    "200ka" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_200),
+    //    "100ka" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_100),
+    //    "50ka" to BitmapFactory.decodeFile("/drawable/img_50.png"),
+    //    "25ka" to BitmapFactory.decodeFile("/drawable/img_25.png"),
+    //    "10ka" to BitmapFactory.decodeFile("/drawable/img_10.png"),
+    //    "5ka" to BitmapFactory.decodeFile("/drawable/img_5.png"),
+    //    "1ka" to BitmapFactory.decodeFile("/drawable/img_1.png"),
+    //    "50коп" to BitmapFactory.decodeFile("/drawable/img_05.png"),
+    //    "25коп" to BitmapFactory.decodeFile("/drawable/img_025.png"),
+    //    "10коп" to BitmapFactory.decodeFile("/drawable/img_01.png"),
+    //    "5коп" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_005),
+    //    "1коп" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_001)
+    //)
     val images = mapOf(
-        "500ka" to BitmapFactory.decodeFile("/drawable/img_500.png"),
-        "200ka" to BitmapFactory.decodeFile("/drawable/img_200.png"),
-        "100ka" to BitmapFactory.decodeFile("/drawable/img_100.png"),
-        "50ka" to BitmapFactory.decodeFile("/drawable/img_50.png"),
-        "25ka" to BitmapFactory.decodeFile("/drawable/img_25.png"),
-        "10ka" to BitmapFactory.decodeFile("/drawable/img_10.png"),
-        "5ka" to BitmapFactory.decodeFile("/drawable/img_5.png"),
-        "1ka" to BitmapFactory.decodeFile("/drawable/img_1.png"),
-        "50коп" to BitmapFactory.decodeFile("/drawable/img_05.png"),
-        "25коп" to BitmapFactory.decodeFile("/drawable/img_025.png"),
-        "10коп" to BitmapFactory.decodeFile("/drawable/img_01.png"),
-        "5коп" to BitmapFactory.decodeFile("/drawable/img_005.png"),
-        "1коп" to BitmapFactory.decodeFile("/drawable/img_001.png")
+        "500ka" to R.drawable.img_500,
+        "200ka" to R.drawable.img_200,
+        "100ka" to R.drawable.img_100,
+        "50ka" to R.drawable.img_50,
+        "25ka" to R.drawable.img_25,
+        "10ka" to R.drawable.img_10,
+        "5ka" to R.drawable.img_5,
+        "1ka" to R.drawable.img_1,
+        "50коп" to R.drawable.img_05,
+        "25коп" to R.drawable.img_025,
+        "10коп" to R.drawable.img_01,
+        "5коп" to R.drawable.img_005,
+        "1коп" to R.drawable.img_001
     )
     val paint = Paint()
     val result = mutableMapOf<String, Int>()
@@ -107,7 +127,7 @@ class MoneyVisualizer(value:Double) {
         return result
     }
 
-    fun drawMoney():Bitmap{
+    fun drawMoney(context: Context):Bitmap{
         val width = 400
         val height = 400
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
@@ -116,37 +136,28 @@ class MoneyVisualizer(value:Double) {
             for (item in resultRandom.filter { item -> item.value > 0 }){
                 if (item.value > 0){
                     resultRandom[item.key] = item.value - 1
-                    //println(item.key + " - " + item.value)
-                    drawBitmap(canvas, images.getOrElse(item.key) { println("Error"); BitmapFactory.decodeFile("/drawable/img_500.png") })
+                    val img = images[item.key]
+                    var bmp = BitmapFactory.decodeResource(context.resources, img!!)
+                    if(bmp == null){
+                        println("null")
+                        bmp = BitmapFactory.decodeResource(context.resources, R.drawable.img_500)
+                    }
+                    drawBitmap(canvas, bmp)
                 }
             }
         }
         return bitmap
     }
 
-    fun getCanvas():Canvas{
-        val width = 400
-        val height = 400
-        val canvas = Canvas()
-        while(resultRandom.filter { item -> item.value > 0 }.isNotEmpty()){
-            for (item in resultRandom.filter { item -> item.value > 0 }){
-                if (item.value > 0){
-                    resultRandom[item.key] = item.value - 1
-                    //println(item.key + " - " + item.value)
-                    drawBitmap(canvas, images.getOrElse(item.key) { println("Error"); BitmapFactory.decodeFile("/drawable/img_500.png") })
-                }
-            }
-        }
-        return canvas
-    }
-
     private fun drawBitmap(canvas:Canvas, bitmap: Bitmap){
         val matrix = Matrix()
         matrix.reset()
-        matrix.setRotate(Random.nextFloat()*360)
+        val degrees = Random.nextFloat()*360
+        canvas.rotate(degrees)
         val x = Random.nextFloat()*(canvas.width - 100)
         val y = Random.nextFloat()*(canvas.height - 50)
         matrix.setTranslate(x, y)
         canvas.drawBitmap(bitmap, matrix, paint)
+        canvas.rotate(-degrees)
     }
 }

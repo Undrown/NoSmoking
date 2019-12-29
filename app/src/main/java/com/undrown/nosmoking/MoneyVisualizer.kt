@@ -23,41 +23,91 @@ class MoneyVisualizer(value:Double) {
         "10ka" to 10.0,
         "5ka" to 5.0,
         "1ka" to 1.0,
-        "50коп" to 0.5,
-        "25коп" to 0.25,
-        "10коп" to 0.10,
-        "5коп" to 0.05,
-        "1коп" to 0.01
+        "50c" to 0.5,
+        "25c" to 0.25,
+        "10c" to 0.10,
+        "5c" to 0.05,
+        "1c" to 0.01
         )
-    //val images = mapOf(
-    //    "500ka" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_500),
-    //    "200ka" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_200),
-    //    "100ka" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_100),
-    //    "50ka" to BitmapFactory.decodeFile("/drawable/img_50.png"),
-    //    "25ka" to BitmapFactory.decodeFile("/drawable/img_25.png"),
-    //    "10ka" to BitmapFactory.decodeFile("/drawable/img_10.png"),
-    //    "5ka" to BitmapFactory.decodeFile("/drawable/img_5.png"),
-    //    "1ka" to BitmapFactory.decodeFile("/drawable/img_1.png"),
-    //    "50коп" to BitmapFactory.decodeFile("/drawable/img_05.png"),
-    //    "25коп" to BitmapFactory.decodeFile("/drawable/img_025.png"),
-    //    "10коп" to BitmapFactory.decodeFile("/drawable/img_01.png"),
-    //    "5коп" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_005),
-    //    "1коп" to BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.img_001)
-    //)
     val images = mapOf(
-        "500ka" to R.drawable.img_500,
-        "200ka" to R.drawable.img_200,
-        "100ka" to R.drawable.img_100,
-        "50ka" to R.drawable.img_50,
-        "25ka" to R.drawable.img_25,
-        "10ka" to R.drawable.img_10,
-        "5ka" to R.drawable.img_5,
-        "1ka" to R.drawable.img_1,
-        "50коп" to R.drawable.img_05,
-        "25коп" to R.drawable.img_025,
-        "10коп" to R.drawable.img_01,
-        "5коп" to R.drawable.img_005,
-        "1коп" to R.drawable.img_001
+        "500ka" to listOf(
+            R.drawable.img_500,
+            R.drawable.img_500r,
+            R.drawable.img_new_500,
+            R.drawable.img_new_500r
+        ),
+        "200ka" to listOf(
+            R.drawable.img_200,
+            R.drawable.img_200r,
+            R.drawable.img_new_200,
+            R.drawable.img_new_200r
+        ),
+        "100ka" to listOf(
+            R.drawable.img_100,
+            R.drawable.img_100r,
+            R.drawable.img_new_100,
+            R.drawable.img_new_100r
+        ),
+        "50ka" to listOf(
+            R.drawable.img_50,
+            R.drawable.img_50r,
+            R.drawable.img_new_50,
+            R.drawable.img_new_50r
+        ),
+        "25ka" to listOf(
+            R.drawable.img_25,
+            R.drawable.img_25r,
+            R.drawable.img_new_25,
+            R.drawable.img_new_25r
+        ),
+        "10ka" to listOf(
+            R.drawable.img_10,
+            R.drawable.img_10r,
+            R.drawable.img_new_10,
+            R.drawable.img_new_10r
+        ),
+        "5ka" to listOf(
+            R.drawable.img_5,
+            R.drawable.img_5r,
+            R.drawable.img_new_5,
+            R.drawable.img_new_5r
+        ),
+        "1ka" to listOf(
+            R.drawable.img_1,
+            R.drawable.img_1r,
+            R.drawable.img_new_1,
+            R.drawable.img_new_1r
+        ),
+        "50c" to listOf(
+            R.drawable.img_05,
+            R.drawable.img_05r,
+            R.drawable.img_05,
+            R.drawable.img_05r
+        ),
+        "25c" to listOf(
+            R.drawable.img_025,
+            R.drawable.img_025r,
+            R.drawable.img_025,
+            R.drawable.img_025r
+        ),
+        "10c" to listOf(
+            R.drawable.img_01,
+            R.drawable.img_01r,
+            R.drawable.img_01,
+            R.drawable.img_01r
+        ),
+        "5c" to listOf(
+            R.drawable.img_005,
+            R.drawable.img_005r,
+            R.drawable.img_005,
+            R.drawable.img_005r
+        ),
+        "1c" to listOf(
+            R.drawable.img_001,
+            R.drawable.img_001r,
+            R.drawable.img_001,
+            R.drawable.img_001r
+        )
     )
     val paint = Paint()
     val result = mutableMapOf<String, Int>()
@@ -70,11 +120,11 @@ class MoneyVisualizer(value:Double) {
         "10ka" to 0,
         "5ka" to 0,
         "1ka" to 0,
-        "50коп" to 0,
-        "25коп" to 0,
-        "10коп" to 0,
-        "5коп" to 0,
-        "1коп" to 0
+        "50c" to 0,
+        "25c" to 0,
+        "10c" to 0,
+        "5c" to 0,
+        "1c" to 0
     )
 
     private fun getSplit(amountUnused:Double){
@@ -137,10 +187,10 @@ class MoneyVisualizer(value:Double) {
                 if (item.value > 0){
                     resultRandom[item.key] = item.value - 1
                     val img = images[item.key]
-                    var bmp = BitmapFactory.decodeResource(context.resources, img!!)
+                    var bmp = BitmapFactory.decodeResource(context.resources, img!![Random.nextInt(4)])
                     if(bmp == null){
                         println("null")
-                        bmp = BitmapFactory.decodeResource(context.resources, R.drawable.img_500)
+                        bmp = BitmapFactory.decodeResource(context.resources, R.drawable.img_001)
                     }
                     drawBitmap(canvas, bmp)
                 }

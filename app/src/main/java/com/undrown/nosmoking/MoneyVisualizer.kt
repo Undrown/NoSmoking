@@ -147,7 +147,7 @@ class MoneyVisualizer(value:Double) {
         val times = Random.nextInt(scalesMax)
         resultRandom[scale.key] = (resultRandom[scale.key]?.plus(times) ?: times)
         if(amountUnused <= 0.02) {
-            resultRandom["1коп"] = resultRandom["1коп"]!! + 2
+            resultRandom["1c"] = resultRandom["1c"]!! + 2
             return
         }
         getRandomSplit(amountUnused - scale.value*times)

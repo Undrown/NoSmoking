@@ -1,11 +1,7 @@
 package com.undrown.nosmoking
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
-import android.graphics.drawable.Drawable
-import android.os.Build
-import androidx.annotation.RequiresApi
 import org.jetbrains.annotations.TestOnly
 import kotlin.math.floor
 import kotlin.random.Random
@@ -14,7 +10,7 @@ import kotlin.random.Random
 * */
 class MoneyVisualizer(value:Double) {
     private val amount = floor(value*100)/100
-    val nominalsRub = mapOf(
+    private val nominalsRub = mapOf(
         "500ka" to 500.0,
         "200ka" to 200.0,
         "100ka" to 100.0,
@@ -29,7 +25,7 @@ class MoneyVisualizer(value:Double) {
         "5c" to 0.05,
         "1c" to 0.01
         )
-    val images = mapOf(
+    private val images = mapOf(
         "500ka" to listOf(
             R.drawable.img_500,
             R.drawable.img_500r,
@@ -109,7 +105,7 @@ class MoneyVisualizer(value:Double) {
             R.drawable.img_001r
         )
     )
-    val paint = Paint()
+    private val paint = Paint()
     val result = mutableMapOf<String, Int>()
     val resultRandom = mutableMapOf(
         "500ka" to 0,
@@ -142,8 +138,8 @@ class MoneyVisualizer(value:Double) {
         if (actualNominals.isEmpty()) return
         val scale = actualNominals.entries.elementAt(Random.nextInt(actualNominals.entries.size))
         var scalesMax = floor(amountUnused/scale.value).toInt()
-        if (scalesMax > 150)
-            scalesMax = 150
+        if (scalesMax > 25)
+            scalesMax = 25
         val times = Random.nextInt(scalesMax)
         resultRandom[scale.key] = (resultRandom[scale.key]?.plus(times) ?: times)
         if(amountUnused <= 0.02) {
@@ -178,8 +174,8 @@ class MoneyVisualizer(value:Double) {
     }
 
     fun drawMoney(context: Context):Bitmap{
-        val width = 400
-        val height = 400
+        val width = 250
+        val height = 250
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         val canvas = Canvas(bitmap)
         while(resultRandom.filter { item -> item.value > 0 }.isNotEmpty()){
@@ -200,14 +196,18 @@ class MoneyVisualizer(value:Double) {
     }
 
     private fun drawBitmap(canvas:Canvas, bitmap: Bitmap){
-        val matrix = Matrix()
-        matrix.reset()
         val degrees = Random.nextFloat()*360
+        var r = Random.nextFloat()*(canvas.width)/2
+        if (Random.nextInt(100) < 50)
+            r /= 2
+        val d = canvas.width/2f
+        val degrees1 = Random.nextFloat()*360
+        canvas.translate(d, d)
         canvas.rotate(degrees)
-        val x = Random.nextFloat()*(canvas.width - 100)
-        val y = Random.nextFloat()*(canvas.height - 50)
-        matrix.setTranslate(x, y)
-        canvas.drawBitmap(bitmap, matrix, paint)
+        canvas.rotate(degrees1, r, 0f)
+        canvas.drawBitmap(bitmap, r, 0f, paint)
+        canvas.rotate(-degrees1, r, 0f)
         canvas.rotate(-degrees)
+        canvas.translate(-d, -d)
     }
 }

@@ -1,7 +1,6 @@
 package com.undrown.nosmoking
 
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
 class MoneySavedFormat(timeStart:Long, timeCur:Long) {
     private val secDelta = (timeCur - timeStart)/1000              //секунд прошло
